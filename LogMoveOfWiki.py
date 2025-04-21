@@ -3,7 +3,7 @@ import json
 import time
 import os
 import re
-from datetime import datetime
+from datetime import datetime, timedelta
 import urllib3
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -276,12 +276,14 @@ def processor(wiki_request, hamichlol_request, log_list, ns):
             string_data = "אין העברות חדשות בבדיקה זו.\n"
     
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    week_ago = (datetime.now() - timedelta(days=7)).strftime("%Y-%m-%d")
+    
     edit_result = hamichlol_request.edit({
         'title': 'משתמש:מוטי בוט/יומן העברות ויקי',
-        'text': f"{{{{טורים|תוכן=\n{string_data}}}}}\n@[[משתמש:מוטי|מוטי]], @[[משתמש:נריה|נריה]] - נוצר בתאריך {timestamp}. ~~~~",
-        'summary': 'דו"ח העברות ויקי',
+        'text': f"{{{{טורים|תוכן=\n{string_data}}}}}\n@[[משתמש:מוטי|מוטי]], @[[משתמש:נריה|נריה]] - דו\"ח העברות מתאריך {week_ago} עד {timestamp}. ~~~~",
+        'summary': 'דו"ח העברות ויקי שבועי',
         'section': 'new',
-        'sectiontitle': f'דו"ח העברות ויקי - {ns_strings.get(ns, "אחר")}',
+        'sectiontitle': f'דו"ח העברות ויקי שבועי - {ns_strings.get(ns, "אחר")}',
         'nocreate': False
     })
     
@@ -289,9 +291,11 @@ def processor(wiki_request, hamichlol_request, log_list, ns):
     return edit_result
 
 def query_with_continue(wiki_request, params, ns):
-
     all_results = []
     continue_params = {}
+    
+    current_time = datetime.now().strftime("%Y-%m-%dT%H:%M:%S.999Z")
+    week_ago = (datetime.now() - timedelta(days=7)).strftime("%Y-%m-%dT%H:%M:%S.000Z")
     
     while True:
         query_params = {
@@ -299,8 +303,8 @@ def query_with_continue(wiki_request, params, ns):
                 'list': 'logevents',
                 'leprop': 'title|type|timestamp|comment|details',
                 'letype': 'move',
-                'lestart': '2025-04-20T23:59:59.999Z',  # היום
-                'leend': '2024-10-01T00:00:00.000Z',    # מועד ריצה קודמת
+                'lestart': current_time,
+                'leend': week_ago,
                 'lenamespace': ns,
                 'lelimit': 'max',
                 **continue_params
@@ -321,13 +325,16 @@ def run_for_namespace(wiki_request, hamichlol_request, ns):
     print(f"Processing namespace {ns}...")
     
     try:
+        current_time = datetime.now().strftime("%Y-%m-%dT%H:%M:%S.999Z")
+        week_ago = (datetime.now() - timedelta(days=7)).strftime("%Y-%m-%dT%H:%M:%S.000Z")
+        
         res = wiki_request.query({
             'options': {
                 'list': 'logevents',
                 'leprop': 'title|type|timestamp|comment|details',
                 'letype': 'move',
-                'lestart': '2025-04-20T23:59:59.999Z',  # היום
-                'leend': '2024-10-01T00:00:00.000Z',    # מועד ריצה קודמת
+                'lestart': current_time, 
+                'leend': week_ago,
                 'lenamespace': ns,
                 'lelimit': 'max'
             }
