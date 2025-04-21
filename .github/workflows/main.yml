@@ -1,0 +1,32 @@
+name: Run LogMoveOfWiki
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install aiohttp
+
+      - name: Run bot
+        env:
+          WIKI_USERNAME: ${{ secrets.WIKI_USERNAME }}
+          WIKI_PASSWARD: ${{ secrets.WIKI_PASSWARD }}
+          HAMICHLOL_USERNAME: ${{ secrets.HAMICHLOL_USERNAME }}
+          HAMICHLOL_PASSWARD: ${{ secrets.HAMICHLOL_PASSWARD }}
+
+        run: |
+          python LogMoveOfWiki.py
