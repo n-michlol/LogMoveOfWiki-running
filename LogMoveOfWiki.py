@@ -350,9 +350,7 @@ def main():
     wiki_password = os.getenv('WIKI_PASSWARD') 
     hamichlol_username = os.getenv('HAMICHLOL_USERNAME')
     hamichlol_password = os.getenv('HAMICHLOL_PASSWARD')
-        
-    print("Note: You need to provide passwords in the code")
-    
+
     wiki_request = WikiRequests("https://he.wikipedia.org/w/api.php")
     hamichlol_request = WikiRequests("https://www.hamichlol.org.il/w/api.php")
     
@@ -366,29 +364,10 @@ def main():
         print("Failed to log in to Hamichlol. Exiting.")
         return
     
-    print("\nWhich namespaces to process?")
-    print("1 = All (Articles, Categories, Templates)")
-    print("2 = Articles only (NS 0)")
-    print("3 = Categories only (NS 14)")
-    print("4 = Templates only (NS 10)")
-    
-    choice = input("Enter your choice (1-4): ")
-    
-    try:
-        if choice == "1":
-            run_for_namespace(wiki_request, hamichlol_request, 0)
-            run_for_namespace(wiki_request, hamichlol_request, 14)
-            run_for_namespace(wiki_request, hamichlol_request, 10)
-        elif choice == "2":
-            run_for_namespace(wiki_request, hamichlol_request, 0)
-        elif choice == "3":
-            run_for_namespace(wiki_request, hamichlol_request, 14)
-        elif choice == "4":
-            run_for_namespace(wiki_request, hamichlol_request, 10)
-        else:
-            print("Invalid choice. Exiting.")
-    except Exception as e:
-        print(f"Error in main execution: {e}")
+    print("Running for all namespaces...")
+    run_for_namespace(wiki_request, hamichlol_request, 0)
+    run_for_namespace(wiki_request, hamichlol_request, 14)
+    run_for_namespace(wiki_request, hamichlol_request, 10)
 
 if __name__ == "__main__":
     main()
