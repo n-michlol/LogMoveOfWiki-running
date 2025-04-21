@@ -27,6 +27,7 @@ jobs:
           WIKI_PASSWARD: ${{ secrets.WIKI_PASSWARD }}
           HAMICHLOL_USERNAME: ${{ secrets.HAMICHLOL_USERNAME }}
           HAMICHLOL_PASSWARD: ${{ secrets.HAMICHLOL_PASSWARD }}
+          NAMESPACE_CHOICE: "1"
 
         run: |
           python LogMoveOfWiki.py
