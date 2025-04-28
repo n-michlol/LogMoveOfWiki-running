@@ -280,7 +280,7 @@ def processor(wiki_request, hamichlol_request, log_list, ns):
     
     edit_result = hamichlol_request.edit({
         'title': 'משתמש:מוטי בוט/יומן העברות ויקי',
-        'text': f"{{{{טורים|תוכן=\n{string_data}}}}}\n@[[משתמש:מוטי|מוטי]], @[[משתמש:נריה|נריה]] - דו\"ח העברות מתאריך {week_ago} עד {timestamp}. ~~~~",
+        'text': f"{{{{טורים|תוכן=\n{string_data}}}}}\n@[[משתמש:נריה|נריה]] - דו\"ח העברות מתאריך {week_ago} עד {timestamp}. ~~~~",
         'summary': 'דו"ח העברות ויקי שבועי',
         'section': 'new',
         'sectiontitle': f'דו"ח העברות ויקי שבועי - {ns_strings.get(ns, "אחר")}',
